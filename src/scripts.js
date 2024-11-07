@@ -59,7 +59,7 @@ if (document.querySelector(".festive-animation")) {
 }
 
   // Debug
-  if (urlParams.get("debug") === "main") {
+  if (urlParams.get("debug") === "mainnav-open") {
     document.querySelector('.mega-menu-toggle').setAttribute('aria-expanded', 'true');
   }
 

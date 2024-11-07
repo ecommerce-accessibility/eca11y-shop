@@ -31,7 +31,7 @@ window.addEventListener('load', function(event) {
     //click events for the top-level menu buttons for dropdowns
 
     // If no debug URL parameter that does simulate a Only-Hover nav on desktop, or independently from it in mobile contexts:
-    if (urlParams.get("debug") !== "nur-hover-hauptnav" || document.body.classList.contains('mobile')) {
+    if (urlParams.get("debug") !== "mainnav-hover" || document.body.classList.contains('mobile')) {
 
       e.addEventListener('click', function(evt) {
         let opened_menu = megamenu.querySelector('.mega-menu .mega-menu-toggle[aria-expanded="true"]');
