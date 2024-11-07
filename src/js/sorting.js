@@ -11,25 +11,25 @@ export function sorting() {
       case "name-desc":
         data = 'name';
         order = 'desc';
-        filterLiveRegion.textContent = "Sortiert nach Alphabet, absteigend";
+        filterLiveRegion.textContent = "Sorted by name, descending";
         break;
       case "name-asc":
         data = 'name';
         order = 'asc';
-        filterLiveRegion.textContent = "Sortiert nach Alphabet, aufsteigend";
+        filterLiveRegion.textContent = "Sorted by name, ascending";
         break;
       case "price-desc":
         data = 'price';
         order = 'desc';
-        filterLiveRegion.textContent = "Sortiert nach Preis, absteigend";
+        filterLiveRegion.textContent = "Sorted by price, descending";
         break;
       case "price-asc":
         data = 'price';
         order = 'asc';
-        filterLiveRegion.textContent = "Sortiert nach Preis, aufsteigend";
+        filterLiveRegion.textContent = "Sorted by price, ascending";
         break;
       default:
-        filterLiveRegion.textContent = "Keine gesonderte Sortierung";
+        filterLiveRegion.textContent = "No special sort active";
         break;
     }
 

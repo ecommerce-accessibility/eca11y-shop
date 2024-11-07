@@ -1,5 +1,5 @@
-/* Folgendes ist ein nur leicht angepasstes https://github.com/metageeky/mega-menu
-unter https://www.mozilla.org/en-US/MPL/2.0/ */
+/* The following is a slightly apapted https://github.com/metageeky/mega-menu
+under https://www.mozilla.org/en-US/MPL/2.0/ */
 
 import * as hoverintent from "hoverintent";
 
@@ -30,7 +30,7 @@ window.addEventListener('load', function(event) {
   for(let e of triggers) {
     //click events for the top-level menu buttons for dropdowns
 
-    // Wenn kein Debug Parameter, der eine Nur-Hover-Navi auf dem Desktop simulieren soll, oder unabhängig davon mobil:
+    // If no debug URL parameter that does simulate a Only-Hover nav on desktop, or independently from it in mobile contexts:
     if (urlParams.get("debug") !== "nur-hover-hauptnav" || document.body.classList.contains('mobile')) {
 
       e.addEventListener('click', function(evt) {

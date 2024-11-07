@@ -132,7 +132,7 @@ export function cart() {
     },
     toggleCartItem(productId) {
       let product = this.getProductById(productId);
-      // Wenn bereits im Warenkorb, entferne den Artikel, aktualisiere die Summe, gib eine entsprechende Meldung in der Live Region aus und persistiere den neuen Warenkorb in Local Storage
+      // If the item is already in the shopping cart, remove it, update the total, display a message in the live region and persist the new cart in local storage.
       if (this.cart.find(x => x.id === productId)) {
         this.cart = this.cart.filter((n) => n.id !== product[0].id);
         this.persistCart();
@@ -141,11 +141,11 @@ export function cart() {
         setTimeout(() => {
           this.cartCaptionTotal.textContent = String(this.sum/100);
         }, 100);
-        // Fokussiere die Warenkorbtabelle, sodass ihr zugänglicher Name in Form einer aktualisierten <caption> ausgegeben wird
+        // Focus the shopping cart table so that its accessible name is output in the form of an updated <caption>
         this.$refs.cart.focus();
       }
       else {
-        // Wenn nicht im Warenkorb, ergänze, aktualisiere die Summe, gib eine entsprechende Meldung in der Live Region aus und persistiere den neuen Warenkorb in Local Storage
+        // If not in the shopping cart, add it, update the total, display a message in the live region and persist the new shopping cart in local storage.
         product[0].localTotal = product[0].price;
         this.cart.push(product[0]);
         this.updateTotalSum();

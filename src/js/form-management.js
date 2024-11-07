@@ -62,44 +62,43 @@ export function formManagement() {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      // requiredFields nicht cachen!
+      // Do not cache requiredFields!
       requiredFields = document.querySelectorAll(".data-input [aria-required='true']");
       emailFields = document.querySelectorAll("input[type='email']");
 
-      // Loope durch alle Pflichtfelder
+      // Looe through all mandatory fields
 
       /**
        * @param {HTMLInputElement} requiredField
        */
       requiredFields.forEach((requiredField) => {
 
-         // Ist "requiredField" ein Fieldset, in dem ein Input ausgewählt ist?
+         // Is ‘requiredField’ a fieldset in which an input is selected?
         let requiredFieldsetisChecked = requiredField.tagName === "FIELDSET" && requiredField.value;
 
-        // Erkenne nicht ausgefüllte oder nicht gecheckte Pflichtfelder oder Radiogroups in Fehlerzustand
+        // Identify mandatory fields or radio groups that have not been completed or checked, or that are in an error state
         const fieldInputEmptyThoughRequired = (!requiredField.checked && requiredField.value === "") || !!requiredFieldsetisChecked;
 
-        // Finde die ID der Fehlermeldung heraus
+        // Find out the ID of the error message
         let idRefRequired = requiredField.getAttribute("data-required-error");
 
         if (fieldInputEmptyThoughRequired) {
-          // Setze unausgefüllte Pflichtfelder in einen semantischen Fehlerzustand
+          // Set empty required fields to a semantic error state
           requiredField.setAttribute("aria-invalid", "true");
 
-          // Assoziiere den Fehlerneldungstext
+          // Associate the error message text
           requiredField.setAttribute("aria-describedby", idRefRequired);
 
-          // Macht die Fehlermeldungen auch visuell sichtdata-input
+          // Field completed? Then resolve any error state:
           document.getElementById(idRefRequired).removeAttribute("hidden");
 
-          // Feld ausgefüllt? Dann etwaigen Fehlerzustand auflösen:
         } else {
 
-            // Verknüpfung mit Fehlermeldung auflösen
+            // Remove link to error message
             requiredField.removeAttribute("aria-describedby");
             document.getElementById(idRefRequired).setAttribute("hidden", true);
 
-            // Semantischen Fehlerzustand auflösen
+            // Remove semaantic error state
             requiredField.removeAttribute("aria-invalid");
         }
 
@@ -107,7 +106,7 @@ export function formManagement() {
           "data-pw-mismatch-error"
         );
 
-        // Wenn beide Passwortfelder ausgefüllt sind, aber nicht übereinstimmen:
+        // If both password fields are filled in but do not match:
         if (
           passwordField1.value &&
           passwordField2.value &&
@@ -117,20 +116,20 @@ export function formManagement() {
           passwordField2.setAttribute("aria-invalid", "true");
           document.getElementById(idRefMismatch).removeAttribute("hidden");
         } else if (
-          // Wenn beide Passwortfelder ausgefüllt sind und übereinstimmen:
+          // If both password fields are filled in and match:
           passwordField1.value &&
           passwordField2.value &&
           passwordField1.value === passwordField2.value
         ) {
-          // Verknüpfung mit Fehlermeldung auflösen
+          // Resolve with error message
           passwordField2.removeAttribute("aria-describedby");
           document.getElementById(idRefMismatch).setAttribute("hidden", true);
 
-          // Semantischen Fehlerzustand auflösen
+          // Resolving a semantic error state
           passwordField2.removeAttribute("aria-invalid");
         }
 
-        // Loope durch alle E-Mail-Eingabefelder
+        // Loop through all email input fields
 
         /**
          * @param {HTMLElement} emailField
@@ -225,11 +224,11 @@ export function formManagement() {
 
         let errorAmount = document.querySelectorAll('.data-input .form__error:not([hidden])').length;
 
-        // Kommuniziere, dass Eingabefehler aufgetreten sind per Dokumententitel und Live Region
+        // Communicate that input errors have occurred via document title and live region
         document.title = `${errorAmount} Fehler bei der Eingabe` + document.title;
         document.querySelector('#filter-live-region').textContent = `${errorAmount} Fehler bei der Eingabe`;
 
-        // Finde das erste fehlerhafte Feld und fokussiere es
+        // Find the first incorrect field and focus on it
         if ( document.querySelector('input[aria-invalid="true"]')) {
           document.querySelector('input[aria-invalid="true"]').focus();
         }

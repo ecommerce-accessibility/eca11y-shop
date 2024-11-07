@@ -45,12 +45,12 @@ export function animations() {
   button.addEventListener('click', () => {
 
       if (document.body.classList.contains('allows-animation')) {
-        // Animation ausstellen
+        // Disbale animation
         document.body.classList.remove('allows-animation');
         localStorage.setItem('animating', 'false');
         button.textContent = "Start animation";
       } else {
-        // Animation anstellen
+        // Enabke animation
         document.body.classList.add('allows-animation');
         localStorage.setItem('animating', 'true');
         button.textContent = "Pause animation";

@@ -13,19 +13,19 @@
   }
 }
 
-/* Fokusstile, wenn :focus-visible nicht unterstützt wird */
+/* Focus Styles if :focus-visible is not supported */
 *:focus {
   outline: 2px solid red;
   outline-offset: 0.25em;
 }
 
 @supports selector(:focus-visible) {
-  /* Reset von :focus, wenn :focus-visible unterstützt wird  */
+  /* Reset of :focus, if :focus-visible is supported */
   *:focus {
     outline: none;
   }
 
-  /* Fokusstile, wenn :focus-visible unterstützt wird */
+  /* Focus styles when :focus-visible is supported */
   *:focus-visible {
     outline: 2px solid var(--brand-blue);
     z-index: 9999;
