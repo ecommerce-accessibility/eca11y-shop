@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<include src="partials/html-head.html">
+  {
+  "title": "T-Shirt Cotton - EcA11y.shop"
+  }
+</include>
+<body>
+<header class="header">
+
+  <include src="partials/header.html"></include>
+
+</header>
+<main id="content" @mounted="whenMounted()" tabindex="-1">
+  <div class="main-inner ">
+    <h1 class="page-title page-title--product">T-Shirt Cotton</h1>
+    <div class="wrapper__inner wrapper__inner--product">
+      <div class="img-container">
+        <include src="partials/product-image.html"></include>
+      </div>
+      <div>
+        <include src="partials/product-price.html"></include>
+
+        <ul class="product-facts">
+          <li>Round neck T-Shirt (Men)</li>
+          <li>100% Cotton</li>
+          <li>Fairtrade</li>
+          <li>Arm length: short</li>
+          <li>Regular Fit</li>
+        </ul>
+
+        <include src="partials/5star.html"></include>
+
+        <fieldset class="product-variations--size">
+        <legend><h2 class="product-variations--size__heading">Sizes</h2></legend>
+        <div class="product-variations--size__item"><input type="radio" id="product-size-s" name="size" value="s" /><label for="product-size-s">S</label></div>
+        <div class="product-variations--size__item"><input checked type="radio" id="product-size-m" name="size" value="m" /><label for="product-size-m">M</label></div>
+        <div class="product-variations--size__item"><input type="radio" id="product-size-l" name="size" value="l" /><label for="product-size-l">L</label></div>
+        <div class="product-variations--size__item"><input type="radio" id="product-size-xl" name="size" value="xl" /><label for="product-size-xl">XL</label></div>
+        <div class="product-variations--size__item"><input type="radio" id="product-size-xxl" name="size" value="xxl" /><label for="product-size-xxl">XXL</label></div>
+        </fieldset>
+
+        <h2 class="product-variations--color__heading">Variations</h2>
+        <ul class="product-variations--color">
+          <li><a href="#" class="product-variations--color__item"><img src="https://marcus-herrmann.com/dateien/ecbf/shirt-rot.jpg" alt="Rot"></a></li>
+          <li><a href="#" class="product-variations--color__item"><img src="https://marcus-herrmann.com/dateien/ecbf/shirt-lila.jpg" alt="Lila"></a></li>
+          <li><a href="#" class="product-variations--color__item"><img src="https://marcus-herrmann.com/dateien/ecbf/shirt-grün.jpg" alt="Grün"></a></li>
+        </ul>
+
+        <details class="product__disclosure">
+          <summary>Product properties</summary>
+
+          <dl class="product__properties">
+            <dt>Brand</dt>
+            <dd>ACME</dd>
+            <dt>Material</dt>
+            <dd>Cottom</dd>
+            <dt>Care instruction</dt>
+            <dd>Washing machine</dd>
+            <dt>Model name</dt>
+            <dd>Lorem Shirtex</dd>
+            <dt>Collar type</dt>
+            <dd>Crew collar</dd>
+            <dt>Made in</dt>
+            <dd>Turmezistan</dd>
+
+          </dl>
+
+        </details>
+
+        <details class="product__disclosure">
+          <summary>Dimensions</summary>
+          <table class="product__table">
+            <tbody>
+            <tr>
+              <th>Size</th>
+              <th>Width</th>
+              <th>Length</th>
+            </tr>
+            <tr>
+              <th scope="row"><strong>S</strong></th>
+              <td>48 cm</td>
+              <td>70 cm</td>
+            </tr>
+            <tr>
+              <th scope="row"><strong>M</strong></th>
+              <td>51 cm</td>
+              <td>72 cm</td>
+            </tr>
+            <tr>
+              <th scope="row"><strong>L</strong></th>
+              <td>54 cm</td>
+              <td>74 cm</td>
+            </tr>
+            <tr>
+              <th scope="row"><strong>XL</strong></th>
+              <td>57 cm</td>
+              <td>76 cm</td>
+            </tr>
+            <tr>
+              <th scope="row"><strong>XXL</strong></th>
+              <td>61 cm</td>
+              <td>78 cm</td>
+            </tr>
+            </tbody>
+          </table>
+        </details>
+
+        <button
+          :aria-pressed="!isInCart(8) ? 'false' : 'true'"
+          class="button product-order-button"
+          @click="toggleCartItem(8)"
+          v-text="!isInCart(8) ? 'Add to cart' : 'Remove from cart'"
+        ></button>
+      </div>
+    </div>
+  </div>
+</main>
+<aside>
+
+</aside>
+<include src="partials/html-footer.html"></include>

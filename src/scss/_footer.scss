@@ -1,0 +1,20 @@
+.footer {
+  border-top: 1px solid #e5e7eb;
+  padding: 2rem;
+  background-color: var(--brand-blue);
+  color: var(--brand-white);
+  line-height: 1.5;
+
+  @media (max-width: 20em) {
+    padding: 1rem;
+  }
+
+  &__headline {
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+
+  &__link {
+    color: inherit;
+  }
+}

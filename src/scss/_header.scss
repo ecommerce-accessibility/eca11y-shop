@@ -1,0 +1,43 @@
+.header {
+  border-bottom: 1px solid var(--brand-grey);
+  padding: 2rem;
+
+  @media (max-width: 40em) {
+    padding: 1rem;
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    font: inherit;
+    font-size: .85em;
+    padding: 0;
+    justify-content: center;
+    flex: 1;
+    color: var(--brand-blue);
+    align-content: center;
+    border: 1px solid transparent;
+    position: relative;
+
+    &[aria-expanded="true"] {
+      color: var(--brand-red);
+    }
+
+    &__cart-button-label,
+    &__account-button-label {
+      @media (max-width: 20em) {
+        display: none;
+      }
+    }
+
+    svg {
+      width: 1rem;
+      margin-inline-end: .5rem;
+    }
+
+    span {
+      line-height: 1;
+    }
+  }
+}

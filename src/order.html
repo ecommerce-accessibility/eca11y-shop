@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<include src="partials/html-head.html">
+  {
+  "title": "Bestellen - EcA11y.shop"
+  }
+</include>
+<body>
+<header class="header">
+
+  <include src="partials/header.html"></include>
+
+</header>
+<main id="content" @mounted="whenMounted()">
+  <div class="main-inner ">
+    <h1 class="page-title">Order</h1>
+    <div class="main-inner--order">
+    <div>
+      <h2>Products</h2>
+      <table class="cart__table" tabindex="-1" ref="cart">
+        <caption class="visually-hidden">
+          <span>Cart, total sum</span>
+          <span data-cart-caption-total></span>
+          <span> Euro</span>
+        </caption>
+        <thead>
+        <tr>
+          <th><span class="visually-hidden">Product</span></th>
+          <th><span class="visually-hidden">Amount</span></th>
+          <th><span class="visually-hidden">Options</span></th>
+          <th><span class="visually-hidden">Cart</span></th>
+          <th><span class="visually-hidden">Price</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="cartItem in cart">
+          <td class="product-area">
+            <strong><a class="cart__product-link" href="product.html">{{cartItem.name}}</a></strong>
+            <img class="cart__product-image" :src="cartItem.img_url" :alt="cartItem.img_alt" />
+          </td>
+          <td class="amount-area"><label :for="'cart-produkt' + cartItem.id">Menge: </label><input :id="'cart-produkt' + cartItem.id" class="cart__product-amount" :value="cartItem.amount" type="number" min="1" max="20"
+                                                                                                   @change="updateItemPrice(cartItem.id)"></td>
+          <td class="options-area">
+            <div class="cart__giftwrap">
+              <label  :for="'giftwrap-' + cartItem.id" class="cart__giftwrap-label">
+                <input :id="'giftwrap-' + cartItem.id" type="checkbox" @change="toggleGiftWrap(cartItem.id)"
+                       :checked="hasGiftwrap(cartItem.id) ? true: undefined"><div>Gift wrap<br> (€ {{giftwrapPrice /
+                100}})</div></label>
+
+            </div>
+          </td>
+          <td class="remove-area">
+            <div >
+              <button @click="toggleCartItem(cartItem.id)" class="cart__remove-item-button" type="button">
+                <span class="visually-hidden">Remove from cart</span>
+              </button>
+            </div>
+          </td>
+          <td class="price-area"><strong>€&nbsp;{{ (getLocalTotal(cartItem) / 100).toFixed(2) }}</strong></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="5">Total sum € {{ (sum / 100).toFixed(2) }}</td>
+        </tr>
+        </tfoot>
+      </table>
+
+      <fieldset class="fieldset" aria-required="true" role="radiogroup" data-required-error="err13">
+        <legend><h2>Ways of payment</h2></legend>
+
+        <div><label for="invoice"> <input type="radio" id="invoice" name="payment-method" checked> Invoice</label></div>
+        <div><label for="pre-paid"> <input type="radio" id="pre-paid" name="payment-method"> Pre-paid</label></div>
+        <div><label for="paythis"> <input type="radio" id="paythis" name="payment-method"> Pay online with
+          PayStuffNow</label></div>
+
+        <p class="form__error" hidden id="err13">Please select payment method</p>
+
+      </fieldset>
+
+    </div>
+    <div>
+
+      <h2>Your data</h2>
+
+
+      <h3>Shipping address</h3>
+
+      <form data-order method="post" class="form">
+        <div>
+          <div class="box box--form data-input">
+            <small class="form__required-label">* means: Mandatory field</small>
+            <div class="row">
+
+              <fieldset class="fieldset" aria-required="true" role="radiogroup" class="" data-required-error="err1">
+                <legend>
+                  Salutation<em>*</em>
+                </legend>
+
+                <input type="radio" name="address.radiogroup.salutation" id="address.radiogroup.salutation.Mrs"
+                       value="Mrs"
+                       class="">
+                <label class="" for="address.radiogroup.salutation.Mrs">
+                  Mrs
+                </label>
+
+                <input type="radio" name="address.radiogroup.salutation" id="address.radiogroup.salutation.Mr"
+                       value="Mr"
+                       class="">
+                <label class="" for="address.radiogroup.salutation.Mr">
+                  Mr
+                </label>
+
+                <input type="radio" name="address.radiogroup.salutation" id="address.radiogroup.salutation.Other"
+                       value="Keine" class="" checked>
+                <label class="" for="address.radiogroup.salutation.Other">
+                  None
+                </label>
+
+                <p id="err1" class="form__error" hidden>Please chose a salutation.</p>
+              </fieldset>
+
+              <div class="form__input-box">
+                <label for="address.firstName" class="form__label">First name<em>*</em>
+                </label>
+                <input aria-required="true" data-required-error="err2" autocomplete="given-name" type="text"
+                       name="address.firstName" id="address.firstName">
+                <p class="form__error" hidden id="err2">Please enter first name</p>
+              </div>
+              <div class="form__input-box">
+                <label for="address.lastName" class="form__label">Family name<em>*</em>
+                </label>
+                <input aria-required="true" data-required-error="err3" type="text" name="address.lastName"
+                       id="address.lastName" autocomplete="family-name" value="">
+                <p class="form__error" hidden id="err3">Please enter family name</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form__input-box">
+                <label for="address.company" class="form__label">Company / Organization
+                </label>
+                <input type="text" name="address.company" id="address.company" autocomplete="organization"
+                       value="">
+              </div>
+              <div class="row">
+                <div class="form__input-box">
+                  <label for="address.address1" class="form__label">Street <em>*</em>
+                  </label>
+                  <input type="text" aria-required="true" data-required-error="err4" name="address.address1"
+                         id="address.address1" autocomplete="address-level3">
+                  <p class="form__error" hidden id="err4">Please enter street address</p>
+                </div>
+                <div class="form__input-box">
+                  <label for="address.address2" class="form__label">Street (continued)<em>*</em>
+                  </label>
+                  <input type="text" aria-required="true" data-required-error="err5" name="address.address2"
+                         id="address.address2" value="">
+                  <p class="form__error" hidden id="err5">Please supply additional street address data</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form__input-box">
+                  <label for="address.zipCode" class="form__label">ZIP code<em>*</em>
+                  </label>
+                  <input type="text" aria-required="true" data-required-error="err6" name="address.zipCode"
+                         id="address.zipCode" autocomplete="postal-code" pattern="[0-9]*">
+                  <p class="form__error" hidden id="err6">Please supply your ZIP Code</p>
+                </div>
+                <div class="form__input-box">
+                  <label for="address.city" class="form__label">City<em>*</em>
+                  </label>
+                  <input autocomplete="address-level2" aria-required="true" data-required-error="err7" type="text"
+                         name="address.city" id="address.city" value="">
+                  <p class="form__error" hidden id="err7">Please enter your city</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form__input-box col-xs-12">
+                  <label for="address.email" class="form__label">E-Mail Address<em>*</em>
+                  </label>
+                  <input aria-required="true" data-required-error="err8" data-email-syntax-error="err9" type="email"
+                         name="address.email" id="address.email" value="" maxlength="50" autocomplete="email">
+                  <p class="form__error" hidden id="err8">Please enter an E-Mail address</p>
+                  <p class="form__error" hidden id="err9">The e-mail address is entered in the wrong format</p>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+          <div>
+            <h3>Invoice address</h3>
+
+          </div>
+          <div >
+            <input type="checkbox" :checked="invoiceDataHidden" id="addressIsInvoiceAddress"
+                   name="addressIsInvoiceAddress"
+                   @click="invoiceDataHidden = !invoiceDataHidden">
+            <label class="form__label" for="addressIsInvoiceAddress">
+              The shipping address is also the invoice address
+            </label>
+            <div :hidden="invoiceDataHidden" :class="(invoiceDataHidden) ? undefined : 'data-input'">
+              <fieldset class="fieldset" :aria-required="(!invoiceDataHidden) ? 'true' : undefined" role="radiogroup" data-required-error="err1" >
+                <legend>
+                  Salutation<em>*</em>
+                </legend>
+
+                <input type="radio" name="address.radiogroup.salutation" id="address-invoice.radiogroup.salutation.Mrs" value="Mrs" disabled>
+                <label for="address-invoice.radiogroup.salutation.Mrs">
+                  Mrs
+                </label>
+
+                <input type="radio" name="address-invoice.radiogroup.salutation"
+                       id="address-invoice.radiogroup.salutation.Mr" value="Mr" class="" disabled>
+                <label for="address-invoice.radiogroup.salutation.Mr">
+                  Mr
+                </label>
+
+                <input type="radio" name="address-invoice.radiogroup.salutation"
+                       id="address-invoice.radiogroup.salutation.Other" value="Other" class="" checked disabled>
+                <label class="" for="address-invoice.radiogroup.salutation.Other">
+                  None
+                </label>
+
+                <p id="err21" class="form__error" hidden>Please select an option</p>
+              </fieldset>
+              <div class="form__input-box">
+                <label class="form__label" for="address-invoice.firstName">First name<em>*</em>
+                </label>
+                <input :aria-required="(!invoiceDataHidden) ? 'true' : undefined" data-required-error="err22" autocomplete="given-name" type="text" value="This is just an"
+                       name="address-invoice.firstName" id="address-invoice.firstName" disabled>
+                <p class="form__error" hidden id="err22">Please enter first name</p>
+              </div>
+              <div class="form__input-box">
+                <label class="form__label" for="address-invoice.lastName">Family name<em>*</em>
+                </label>
+                <input :aria-required="(!invoiceDataHidden) ? 'true' : undefined" data-required-error="err23" type="text" name="address-invoice.lastName"
+                       id="address-invoice.lastName" autocomplete="family-name" value="Example" disabled>
+                <p class="form__error" hidden id="err23">Please enter family name</p>
+              </div>
+              <div class="row">
+                <div class="form__input-box">
+                  <label class="form__label" for="address-invoice.company">Company / Organization
+                  </label>
+                  <input type="text" name="address-invoice.company" id="address-invoice.company"
+                         autocomplete="organization"
+                         data-nudge="#nudgeCheckoutPersonalData-company-ng-maxlength" value="for a random" disabled>
+                </div>
+                <div class="row">
+                  <div class="form__input-box">
+                    <label class="form__label" for="address-invoice.address1">Street<em>*</em>
+                    </label>
+                    <input type="text" :aria-required="(!invoiceDataHidden) ? 'true' : undefined" data-required-error="err24" name="address-invoice.address1" value="Data Entry"
+                           id="address-invoice.address1" autocomplete="address-level3" disabled>
+                    <p class="form__error" hidden id="err24">Please enter street address</p>
+                  </div>
+                  <div class="form__input-box">
+                    <label class="form__label" for="address-invoice.address2">Street (continued)<em>*</em>
+                    </label>
+                    <input type="text" :aria-required="(!invoiceDataHidden) ? 'true' : undefined" data-required-error="err25" name="address-invoice.address2"
+                           id="address-invoice.address2" value="42" disabled>
+                    <p class="form__error" hidden id="err25">Please supply additional street address data</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form__input-box">
+                    <label class="form__label" for="address-invoice.zipCode">ZIP Code<em>*</em>
+                    </label>
+                    <input type="text" :aria-required="(!invoiceDataHidden) ? 'true' : undefined" data-required-error="err26" name="address-invoice.zipCode" value="12345"
+                           id="address-invoice.zipCode" autocomplete="postal-code" pattern="[0-9]*" disabled>
+                    <p class="form__error" hidden id="err26">Please supply your ZIP Code</p>
+                  </div>
+                  <div class="form__input-box">
+                    <label class="form__label" for="address-invoice.city">City<em>*</em>
+                    </label>
+                    <input autocomplete="address-level2" :aria-required="(!invoiceDataHidden) ? 'true' : undefined" data-required-error="err27" type="text"
+                           name="address-invoice.city" id="address-invoice.city" value="Of Address data" disabled>
+                    <p class="form__error" hidden id="err27">Please enter your city</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form__input-box col-xs-12">
+                    <label class="form__label" for="address-invoice.email">E-Mail Address<em>*</em>
+                    </label>
+                    <input :aria-required="(!invoiceDataHidden) ? 'true' : undefined" data-required-error="err28" data-email-syntax-error="err29" type="email"
+                           name="address-invoice.email" id="address-invoice.email" value="foo@bar.tld" maxlength="50"
+                           autocomplete="email" disabled>
+                    <p class="form__error" hidden id="err28">Please enter an E-Mail address</p>
+                    <p class="form__error" hidden id="err29">The e-mail address is entered in the wrong format-</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <input type="hidden" v-if="invoiceDataHidden" name="customerDataIsInvoiceData">
+            <div class="row">
+              <div class="create-account">
+                <h3>Customer account</h3>
+
+                <label for="registerUser"><input type="checkbox" id="registerUser" name="registerUser" value="1">
+
+                  I don't wish to re-enter my data on my next order, and therefore want to create an account</label>
+
+
+                <div class="row" id="registerUserArea" hidden>
+                  <div class="form__input-box">
+                    <label class="form__label" for="logonData.loginPassword">Password (min. 6 characters)<em>*</em>
+                    </label>
+                    <div class="form__password-show-wrapper">
+
+                    <input type="password" data-required-error="err10" aria-required="true" class="create-account__new-password-input"
+                           name="logonData.loginPassword"
+                           id="logonData.loginPassword" value="" title="Passwort (min. 6 Zeichen)" maxlength="30">
+                    <button class="button create-account__password-switch passwordHideShow" type="button">
+                      <svg class="show" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 16.01C14.2091 16.01 16 14.2191 16 12.01C16 9.80087 14.2091 8.01001 12 8.01001C9.79086 8.01001 8 9.80087 8 12.01C8 14.2191 9.79086 16.01 12 16.01Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 11.98C8.09 1.31996 15.91 1.32996 22 11.98" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 12.01C15.91 22.67 8.09 22.66 2 12.01" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <svg class="hide" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14.83 9.17999C14.2706 8.61995 13.5576 8.23846 12.7813 8.08386C12.0049 7.92926 11.2002 8.00851 10.4689 8.31152C9.73758 8.61453 9.11264 9.12769 8.67316 9.78607C8.23367 10.4444 7.99938 11.2184 8 12.01C7.99916 13.0663 8.41619 14.08 9.16004 14.83" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 16.01C13.0609 16.01 14.0783 15.5886 14.8284 14.8384C15.5786 14.0883 16 13.0709 16 12.01" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M17.61 6.39004L6.38 17.62C4.6208 15.9966 3.14099 14.0944 2 11.99C6.71 3.76002 12.44 1.89004 17.61 6.39004Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M20.9994 3L17.6094 6.39" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.38 17.62L3 21" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M19.5695 8.42999C20.4801 9.55186 21.2931 10.7496 21.9995 12.01C17.9995 19.01 13.2695 21.4 8.76953 19.23" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span class="visually-hidden">Show password</span>
+                    </button>
+                    </div>
+                    <span class="visually-hidden" aria-live="polite"></span>
+                    <p class="form__error" hidden id="err10">Please enter a password</p>
+                  </div>
+                  <div class="form__input-box">
+                    <label class="form__label" for="logonData.loginPasswordRepeat">Repeat password<em>*</em>
+                    </label>
+                    <div class="form__password-show-wrapper">
+                    <input type="password" data-required-error="err11" data-pw-mismatch-error="err12" class="create-account__new-password-input"
+                           aria-required="true"
+                           name="logonData.loginPasswordRepeat" id="logonData.loginPasswordRepeat" value=""
+                           title="Passwort wiederholen" maxlength="30">
+                    <button class="button create-account__password-switch passwordHideShow" type="button">
+                      <svg class="show" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 16.01C14.2091 16.01 16 14.2191 16 12.01C16 9.80087 14.2091 8.01001 12 8.01001C9.79086 8.01001 8 9.80087 8 12.01C8 14.2191 9.79086 16.01 12 16.01Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 11.98C8.09 1.31996 15.91 1.32996 22 11.98" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 12.01C15.91 22.67 8.09 22.66 2 12.01" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <svg class="hide" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14.83 9.17999C14.2706 8.61995 13.5576 8.23846 12.7813 8.08386C12.0049 7.92926 11.2002 8.00851 10.4689 8.31152C9.73758 8.61453 9.11264 9.12769 8.67316 9.78607C8.23367 10.4444 7.99938 11.2184 8 12.01C7.99916 13.0663 8.41619 14.08 9.16004 14.83" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 16.01C13.0609 16.01 14.0783 15.5886 14.8284 14.8384C15.5786 14.0883 16 13.0709 16 12.01" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M17.61 6.39004L6.38 17.62C4.6208 15.9966 3.14099 14.0944 2 11.99C6.71 3.76002 12.44 1.89004 17.61 6.39004Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M20.9994 3L17.6094 6.39" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.38 17.62L3 21" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M19.5695 8.42999C20.4801 9.55186 21.2931 10.7496 21.9995 12.01C17.9995 19.01 13.2695 21.4 8.76953 19.23" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span class="visually-hidden">Show password</span>
+                    </button>
+                    </div>
+                    <span class="visually-hidden" aria-live="polite"></span>
+                    <p class="form__error" hidden id="err11">Please enter the password again</p>
+                    <p class="form__error" hidden id="err12">Both passwords do not match</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+        <button class="button button--order" type="submit">Finalize order</button>
+
+      </form>
+
+
+    </div>
+  </div>
+  </div>
+</main>
+<aside>
+
+</aside>
+<include src="partials/html-footer.html"></include>
+

@@ -1,0 +1,25 @@
+{
+  "name": "eca11y-shop",
+  "version": "1.0.0",
+  "description": "Example shop for the learning portal ecommerce-accessibility.com",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel src/*.html",
+    "build": "rm -rf /dist && parcel build src/*.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.1.0",
+    "eslint": "^8.7.0",
+    "jsdoc": "^4.0.3",
+    "parcel": "^2.12.0"
+  },
+  "dependencies": {
+    "@parcel/transformer-css": "^2.8.2",
+    "hoverintent": "^2.2.1",
+    "posthtml-include": "^1.7.2",
+    "tinysort": "^3.2.7"
+  }
+}

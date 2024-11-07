@@ -1,0 +1,81 @@
+<button data-cart-modal-trigger class="header__button cart-widget-button">
+  <svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true" focusable="false"
+       xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor"
+          d="M28.76 11.35A1 1 0 0 0 28 11h-6V7a3 3 0 0 0-3-3h-6a3 3 0 0 0-3 3v4H4a1 1 0 0 0-1 1.15L4.88 24.3a2 2 0 0 0 2 1.7h18.26a2 2 0 0 0 2-1.7L29 12.15a1 1 0 0 0-.24-.8M12 7a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v4h-8Zm13.14 17H6.86L5.17 13h21.66Z" />
+  </svg>
+  Your Cart <span class="cart-widget-button__total-cart-items">{{ totalCartItems }}</span> <span class="visually-hidden">items</span></span>
+</button>
+
+<dialog
+  id="cart-modal"
+  aria-labelledby="cart-modal-title"
+>
+  <div class="dialog__content dialog__content--fifty cart">
+    <div class="cart__header">
+      <form method="dialog" class="cart__close-form">
+        <button class="cart__close" aria-label="Dialog schließen">
+        </button>
+      </form>
+
+      <h1 class="cart__title" id="cart-modal-title">Cart ({{ totalCartItems }})</h1>
+    </div>
+    <div class="cart--empty" v-show="cart.length === 0">
+      <h2>Still empty</h2>
+      <p>This is a text that is intended to encourage you to fill your shopping basket and ultimately to buy something.</p>
+    </div>
+    <form v-show="cart.length !== 0" action="/order.html">
+      <a class="skiplink cart__skiplink" href="#order">Tabelle überspringen</a>
+      <table class="cart__table" tabindex="-1" ref="cart">
+        <caption class="visually-hidden">
+          <span>Cart, total sum </span>
+          <span data-cart-caption-total></span>
+          <span> Euro</span>
+        </caption>
+        <thead>
+        <tr>
+          <th><span class="visually-hidden">Product</span></th>
+          <th><span class="visually-hidden">Amount</span></th>
+          <th><span class="visually-hidden">Options</span></th>
+          <th><span class="visually-hidden">Cart</span></th>
+          <th><span class="visually-hidden">Price</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="cartItem in cart">
+          <td class="product-area">
+            <strong><a class="cart__product-link" href="product.html">{{cartItem.name}}</a></strong>
+            <img class="cart__product-image" :src="cartItem.img_url" :alt="cartItem.img_alt" />
+          </td>
+          <td class="amount-area"><label :for="'cart-produkt-' + cartItem.id">Menge: </label><input :id="'cart-produkt-' + cartItem.id" class="cart__product-amount" :value="cartItem.amount" type="number" min="1" max="20"
+                     @change="updateItemPrice(cartItem.id)"></td>
+          <td class="options-area">
+            <div class="cart__giftwrap">
+              <label :for="'giftwrap-' + cartItem.id" class="cart__giftwrap-label">
+                <input :id="'giftwrap-' + cartItem.id" type="checkbox" @change="toggleGiftWrap(cartItem.id)"
+                       :checked="hasGiftwrap(cartItem.id) ? true: undefined"><div>Gift wrap<br> (€ {{giftwrapPrice /
+                100}})</div></label>
+
+            </div>
+          </td>
+          <td class="remove-area">
+            <div >
+              <button @click="toggleCartItem(cartItem.id)" class="cart__remove-item-button" type="button">
+                <span class="visually-hidden">Remove from cart</span>
+              </button>
+            </div>
+          </td>
+          <td class="price-area"><strong>€&nbsp;{{ (getLocalTotal(cartItem) / 100).toFixed(2) }}</strong></td>
+        </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5">Total sum € {{ (sum / 100).toFixed(2) }}</td>
+          </tr>
+        </tfoot>
+      </table>
+
+    <button class="cart__submit" id="order" type="submit">Order</button>
+    </form>
+  </div>
+</dialog>

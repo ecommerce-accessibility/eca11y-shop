@@ -1,0 +1,57 @@
+.aufklapp-button[aria-expanded="false"] + .aufklapp-bereich {
+  display: none;
+  opacity: 0;
+}
+
+.aufklapp-button[aria-expanded="true"] + .aufklapp-bereich {
+  display: block;
+  opacity: 1;
+  transition: opacity .2s ease-in;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+/* Fokusstile, wenn :focus-visible nicht unterstützt wird */
+*:focus {
+  outline: 2px solid red;
+  outline-offset: 0.25em;
+}
+
+@supports selector(:focus-visible) {
+  /* Reset von :focus, wenn :focus-visible unterstützt wird  */
+  *:focus {
+    outline: none;
+  }
+
+  /* Fokusstile, wenn :focus-visible unterstützt wird */
+  *:focus-visible {
+    outline: 2px solid var(--brand-blue);
+    z-index: 9999;
+    outline-offset: 0.25em;
+  }
+}
+
+.visually-hidden:not(:focus):not(:active),
+.skiplink{
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.skiplink:focus {
+  height: auto;
+  width: auto;
+  overflow: auto;
+  clip: auto;
+  background-color: var(--brand-red);
+  color: var(--brand-white);
+  text-decoration: none;
+  padding: .5em;
+  outline: none;
+}

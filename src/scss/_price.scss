@@ -1,0 +1,12 @@
+.price {
+
+  &__new {
+    color: var(--brand-red);
+    font-weight: bold;
+    font-size: 2em;
+
+    @media (max-width: 40em) {
+      font-size: 1.5em;
+    }
+  }
+}

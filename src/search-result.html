@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<include src="partials/html-head.html">
+  {
+  "title": "Search results – EcA11y.shop"
+  }
+</include>
+<body>
+<header class="header">
+  <script>
+    /* Nur für die Demo */
+    window.onload = function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      document.querySelector(".search__input").value = urlParams.get("q");
+      document.getElementById("searchTerm").textContent = urlParams.get("q");
+      document.querySelectorAll(".searchTerm-instance").forEach((searchTermInstance) => searchTermInstance.textContent = urlParams.get("q"));
+    };
+  </script>
+  <include src="partials/header.html"></include>
+</header>
+<main id="content" @mounted="whenMounted()" tabindex="-1">
+  <div class="main-inner">
+    <h1 class="page-title">Search for: <span id="searchTerm">"Search term"</span> – 42 results</h1>
+    <include src="partials/search-results.html"></include>
+  </div>
+</main>
+
+<include src="partials/html-footer.html"></include>
+

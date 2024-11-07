@@ -1,0 +1,20 @@
+<h2>New arrivals</h2>
+
+
+<include src="partials/product-filter.html"></include>
+
+<ul id="product-list" class="product-list">
+  <li v-for="product in sortedProducts" class="product-list__product">
+    <div class="product-list__item-inner">
+    <img class="product-list__image" :src="product.img_url" :alt="product.img_alt" />
+    <strong><a class="product-list__link" href="product.html">{{product.name}}</a></strong>
+    <p>€ {{product.price / 100}}</p>
+    </div>
+    <button class="button"
+      @click="toggleCartItem(product.id)"
+      v-text="!isInCart(product.id) ? 'Add to cart' : 'Remove from cart'"
+      :aria-pressed="!isInCart(product.id) ? 'false' : 'true'"
+    ></button>
+    </div>
+  </li>
+</ul>

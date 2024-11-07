@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<include src="partials/html-head.html">
+  {
+  "title": "EcA11y.shop – Your shop for all kinds of things"
+  }
+</include>
+<body>
+<header class="header">
+  <include src="partials/header.html"></include>
+</header>
+<main id="content" @mounted="whenMounted()" tabindex="-1">
+  <div class="main-inner">
+    <h1 class="page-title page-title--home">Your shop for all kinds of things</h1>
+
+    <include src="partials/carousel.html"></include>
+
+    <include src="partials/product-list.html"></include>
+  </div>
+</main>
+<include src="partials/html-footer.html"></include>
+
